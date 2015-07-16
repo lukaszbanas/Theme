@@ -1,0 +1,7 @@
+[2015-07-16 18:22:28] system.DEBUG: Successfully created new \Display instance ["Page","__construct"] []
+[2015-07-16 18:22:28] system.DEBUG: Setting Twig cache as DISABLED ["Page","__construct"] []
+[2015-07-16 18:22:28] system.DEBUG: Setting RSS channels as ENABLED ["Page","__construct"] []
+[2015-07-16 18:22:28] system.DEBUG: Successfully created new \Display instance ["Page","__construct"] []
+[2015-07-16 18:22:28] system.DEBUG: Setting Twig cache as DISABLED ["Page","__construct"] []
+[2015-07-16 18:22:28] system.DEBUG: Setting RSS channels as ENABLED ["Page","__construct"] []
+[2015-07-16 18:22:29] system.CRITICAL: Call to undefined function `getUrl` through __call magic method. ["Page","__call"] []

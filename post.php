@@ -1,5 +1,4 @@
 <?php
 
-
-Display::show('post.html.twig');
-Display::_renderPage();
+$display->render('post.html.twig', array());
+$display->send();

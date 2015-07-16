@@ -1,4 +1,4 @@
 <?php
-Display::show('category.html.twig');
-Display::_renderPage();
-?>
+
+$display->render('category.html.twig', array());
+$display->send();

@@ -9,6 +9,9 @@
  * @since Twenty Twelve 1.0
  */
 
+exit();
+//@TODO single image template
+
 get_header(); ?>
 
 	<div id="primary" class="site-content">
