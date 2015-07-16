@@ -1,0 +1,12 @@
+{# 
+	Bootstrap close icon ( http://getbootstrap.com/css/#helper-classes-close )
+	Example of use:
+	
+	{% import "macros/close.html.twig" as bootstrap %}
+	{{ bootstrap.close() }}
+	{{ bootstrap.close('<i class="fa fa-close"></i>') }}
+#}
+
+{% macro close(icon) %}
+	<button type="button" class="close" aria-label="Close"><span aria-hidden="true">{{ icon|default('&times;')|raw }}</span></button>
+{% endmacro %}

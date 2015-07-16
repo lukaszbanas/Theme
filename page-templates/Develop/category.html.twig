@@ -1,0 +1,22 @@
+{# category.html.twig #}
+
+{% extends 'layout.html.twig' %}
+
+{% block article %}
+
+{% if Wordpress.term_description is not empty %}
+	<div class="category_discription">{{ Wordpress.term_description | raw }}</div>
+{% endif %}
+
+<article class="site-content">
+	{% if Content is defined %}
+		{{ Content }}
+	{% endif %}
+	{% for post in whilePosts %}
+		<section>
+			<header class="page-header"><h1 class="entry-header">{{ Wordpress.the_title }}</h1></header>
+			<div class="content_container">{{ Wordpress.the_content }}</div>
+		</section>
+	{% endfor %}
+</article>
+{% endblock %}

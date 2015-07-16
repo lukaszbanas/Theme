@@ -1,0 +1,17 @@
+{
+    "name": "LBanas/Theme",
+    "description": "Custom template for rapid development",
+    "minimum-stability": "stable",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Banaś Łukasz",
+            "email": "banaslukasz4@gmail.com"
+        }
+    ],
+    "require": {
+        "symfony/http-foundation": "^2.7",
+        "monolog/monolog": "^1.14",
+        "twig/twig": "^1.18"
+    }
+}

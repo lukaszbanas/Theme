@@ -1,0 +1,13 @@
+{# 
+	Bootstrap breadcrumbs ( http://getbootstrap.com/components/#breadcrumbs )
+	Example of use:
+	
+	{% import "macros/breadcrumbs.html.twig" as bootstrap %}
+	{{ bootstrap.breadcrumbs("<li><a href='google.pl'>google.pl</a></li><li><a href='google.com'>google.com</a></li><li>Wikipedia</li>") }}
+#}
+
+{% macro breadcrumbs(list) %}
+	<ol class="breadcrumb">
+		{{ list|raw }}
+	</ol>
+{% endmacro %}

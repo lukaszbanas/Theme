@@ -1,0 +1,68 @@
+a{
+	&, &:visited, &:link{
+		color: @_color2;
+		text-decoration:none;
+		&:extend(.animated);
+		._animation-property(color);
+	}
+	&:hover{color: @_color2-hover;}
+}
+
+
+hr{border-top:1px solid @_color1;}
+
+/* form elements */
+
+fieldset{
+	margin-top:5px;
+	margin-bottom: 5px;
+	background-color: rgba(255, 255, 255, 0.5);
+	legend{
+		background-color: rgba(255, 255, 255, 0.5);
+	}
+}
+
+input[type="text"],input[type="week"],input[type="url"],input[type="time"],input[type="tel"],input[type="search"],input[type="password"],input[type="number"],input[type="month"],input[type="email"],input[type="date"],textarea,select{
+	padding-left: 10px;
+	padding-right: 10px;
+	outline-color: @_color2;
+	background-color: @_bg_color1;
+}
+
+input[type="submit"],input[type="reset"],input[type="button"],button{
+	cursor:pointer;
+	background-color: @_bg_color1;
+	border-color: @_bg_color1;
+	&:extend(.animated);
+	._animation-property(background-color);
+	&:hover{background-color: darken(@_bg_color1,10%);}
+	&:active{background-color: darken(@_bg_color1,50%);}
+	&:focus{outline-color: darken(@_bg_color1,50%);}
+}
+
+/* Font Avesome icons
+input:not([type="submit"]):not([type="reset"]):not([type="button"]):not([type="checkbox"]), input[type="text"]+i, .wpcf7-form-control-wrap+i{
+	border-top-right-radius:10px;
+	border-bottom-right-radius:10px;
+}
+input:not([type="submit"]):not([type="reset"]):not([type="button"]):not([type="checkbox"]){
+	padding-right: 29px;
+	width: 25px;
+	&:extend(.animated);
+	._animation-property(width);
+	&:focus,&:active{
+		width:250px;
+	}
+}
+input[type="text"]+i, .wpcf7-form-control-wrap+i{
+	color: @_color1;
+	background-color: darken(@_bg_color1,10%);
+	font-size: 19px;
+	position: relative;
+	border: 1px outset darken(@_bg_color1,10%);
+	top: 2px;
+	right: 29px;
+	width: 24px;
+	padding-left:5px;
+}
+*/

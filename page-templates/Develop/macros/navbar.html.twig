@@ -1,0 +1,48 @@
+{# 
+	Bootstrap navbar ( http://getbootstrap.com/components/#navbar )
+	Example of use:
+	
+	{% import "macros/navbar.html.twig" as bootstrap %}
+	{{ bootstrap.navbar('navbar-default', '<a class="navbar-brand" href="http://www.google.com"><img alt="logo" src="" /></a>', '<ul class="nav navbar"><li><a href="google.pl"></a></li></ul>', { search: true, container-class: 'container-fluid' } }}
+#}
+
+{% macro navbar(classes, logo, menu, options) %}
+
+{% set unique_id=random() %}
+
+<nav class="navbar {{ classes }}">
+	
+	<!-- navbar container -->
+	<div class="{% if options.container-class is defined%}{{ options.container-class }}{% else %}container-fluid{% endif %}">
+		<!-- navbar header -->
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar-collapse-{{ unique_id }}">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			{{ logo|raw }}
+		</div>
+		<!-- /navbar header -->
+
+		<!-- navbar content -->
+		<div class="collapse navbar-collapse" id="bs-navbar-collapse-{{ unique_id }}">
+			{{ menu|raw }}
+			
+			{% if options.search is defined and options.search != false %}
+			<form class="navbar-form navbar-left" role="search">
+				<div class="form-group">
+					<input type="text" class="form-control" placeholder="Search">
+				</div>
+				<button type="submit" class="btn btn-default">Submit</button>
+			</form>
+			{% endif %}
+		</div>
+		<!-- /navbar content -->
+	</div>
+	<!-- /navbar container -->
+	
+</nav>
+
+{% endmacro %}
