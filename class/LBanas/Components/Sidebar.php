@@ -20,7 +20,9 @@ class Sidebar extends \LBanas\Components\Factory
     public function __construct($name, array $extra)
     {
         $this->data['name'] = $name;
-        $this->data['id'] = !empty($extra['id']) ? $extra['id'] : uniqid('sidebar_');
-        $this->data['description'] = !empty($extra['description']) ? $extra['description'] : '';
+
+        foreach ($extra as $key => $val) {
+            $this->data[ $key ] = $val;
+        }
     }
 }

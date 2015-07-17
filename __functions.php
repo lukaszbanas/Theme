@@ -33,4 +33,3 @@ try {
     echo( $e->getMessage() );
     Theme\Display::terminate();
 }
-//Theme\Display::$logger->info('y');

@@ -125,7 +125,10 @@ class Config
             'name'  => 'Static Sidebar',
             'extra' => array(
                 'id'          => 'sidebar-1',
-                'description' => 'dummy sidebar')),
+                'description' => 'dummy sidebar',
+                'before_widget' => '<li id="%1$s" class="list-group-item widget %2$s">',
+                'after_widget' => '</li>',
+            )),
     );
 
     /**

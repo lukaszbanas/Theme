@@ -5,7 +5,7 @@
 {% block layout %}
     {% block mainNav %}
 		<!-- block mainNav-->
-		<nav class="main-nav navbar navbar-default navbar-fixed-top">
+		<nav class="main-nav navbar navbar-default">
 			<div class="container">
 				<div class="navbar-header">
 					<a class="navbar-brand" href="{{ Wordpress.home_url() }}">
@@ -59,7 +59,9 @@
                             <!-- block asideLeft  -->
                             <div class="col-md-3">
                                 {% if Wordpress.is_active_sidebar('sidebar-1') %}
-                                    <ul>{{ Wordpress.dynamic_sidebar('sidebar-1') ? '' : '' }}</ul>
+                                    <ul class="list-group">
+                                        {{ Wordpress.dynamic_sidebar('sidebar-1') ? "" : "" }}
+                                    </ul>
                                 {% endif %}
                             </div>
                             <!-- /block asideLeft -->
@@ -74,7 +76,11 @@
 
                     <div id="page" class="col-md-{{ mainClass }}">
                         <!-- block article-->
-                        {% block article %}{% endblock article %}
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                {% block article %}{% endblock article %}
+                            </div>
+                        </div>
                         <!-- /block article -->
                     </div>
 
