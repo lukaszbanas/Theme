@@ -1,4 +1,5 @@
 <?php
-Display::show('search.html.twig');
-Display::_renderPage();
-?>
+
+$display->render('search.html.twig', array());
+$display->send();
+

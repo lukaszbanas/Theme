@@ -42,11 +42,14 @@
 		var _host = '{{ Wordpress.home_url() }}';
 	</script>
 
-	<!-- block layout -->
-	{% block layout %}
-	{% endblock layout %}
-	<!-- /block layout -->	
-	
+	<div class="container-fluid">
+		<!-- block layout -->
+		{% block layout %}
+		{% endblock layout %}
+		<!-- /block layout -->
+	</div>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 	<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.2/ScrollMagic.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.2/plugins/jquery.ScrollMagic.min.js"></script>

@@ -1,3 +1,7 @@
+#DirectoryIndex index.php
+
+#Options -Indexes
+
 <FilesMatch ".gitignore|.htaccess|__functions.php|__index.php|composer.json|composer.lock">
   Order allow,deny
   Deny from all

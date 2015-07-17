@@ -24,15 +24,6 @@ try {
     $display = new Theme\Display();
     $display->init();
 
-    $display->addGlobalArguments(
-        'mainMenu',
-        wp_nav_menu(array(
-            'theme_location' => 'main_menu_1',
-            'menu_class' => 'nav-menu',
-            'echo'=>false
-        ))
-    );
-
     $display->addGlobalArguments('Wordpress', $display);
     $display->addGlobalArguments('whilePosts', new Theme\WhileIterator(
         create_function('', "return have_posts();"),

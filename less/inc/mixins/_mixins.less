@@ -1,28 +1,7 @@
-._backgroundClip(){
-  background-clip: padding-box;
-  -moz-background-clip: padding;
-  -webkit-background-clip: padding-box;
-}
 
 ._remAndPxFont(@incresement:0,@size:@_font-size_norm){
   font-size: @size+@incresement;
   font-size: unit(@size/10,rem) + unit(@incresement/10, rem);
-}
-
-._animation-time(@time:@_animation-time){
-  -webkit-transition-duration: @time;
-  -moz-transition-duration: @time;
-  -ms-transition-duration: @time;
-  -o-transition-duration: @time;
-  transition-duration: @time;
-}
-
-._animation-property(@prop:color){
-  -webkit-transition-property: @prop;
-  -moz-transition-property: @prop;
-  -ms-transition-property: @prop;
-  -o-transition-property: @prop;
-  transition-property: @prop;
 }
 
 .makeBox(@display:block, @width:100%, @height:100%){
@@ -59,85 +38,14 @@
   }
 }
 
-.gradient(@start, @end){
-  background: @start; /* Old browsers */
-  background: -moz-linear-gradient(top,  rgba(red(@start),green(@start),blue(@start),1) 0%, rgba(red(@end),green(@end),blue(@end),1) 100%); /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(red(@start),green(@start),blue(@start),1)), color-stop(100%,rgba(red(@end),green(@end),blue(@end),1))); /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top,  rgba(red(@start),green(@start),blue(@start),1) 0%,rgba(red(@end),green(@end),blue(@end),1) 100%); /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top,  rgba(red(@start),green(@start),blue(@start),1) 0%,rgba(red(@end),green(@end),blue(@end),1) 100%); /* Opera 11.10+ */
-  background: -ms-linear-gradient(top,  rgba(red(@start),green(@start),blue(@start),1) 0%,rgba(red(@end),green(@end),blue(@end),1) 100%); /* IE10+ */
-  background: linear-gradient(to bottom,  rgba(red(@start),green(@start),blue(@start),1) 0%,rgba(red(@end),green(@end),blue(@end),1) 100%); /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='@{start}', endColorstr='@{end}',GradientType=0 ); /* IE6-8 */
-}
-
-.opacity(@opacity: 0.5){
-  @ieOpacity: @opacity * 100;
-  -webkit-opacity: 	@opacity;
-  -moz-opacity: 		@opacity;
-  -ms-filter: ~"progid:DXImageTransform.Microsoft.Alpha(Opacity=@{ieOpacity})";
-  opacity: 		@opacity;
-  filter: ~"alpha(opacity=@{ieOpacity})";
-}
-
-.border-radius(@radius: 5px) {
-  -webkit-border-radius: @radius;
-  -moz-border-radius:    @radius;
-  border-radius:         @radius;
-
-  -moz-background-clip:    padding;
-  -webkit-background-clip: padding-box;
-  background-clip:         padding-box;
-}
-
-.transform(@string){
-  -webkit-transform+:   @string;
-  -moz-transform+: 	 @string;
-  -ms-transform+: 	 @string;
-  -o-transform+: 		 @string;
-}
-
-._animation(@prop:color, @time:0.2s, @easing:linear){
-  -webkit-transition+: @prop, @time, @easing;
-  -moz-transition+: @prop, @time, @easing;
-  -ms-transition+: @prop, @time, @easing;
-  -o-transition+: @prop, @time, @easing;
-  transition+: @prop, @time, @easing;
-}
-
-.box-sizing(@val:border-box){
-  -webkit-box-sizing: @val;
-  -moz-box-sizing: @val;
-  box-sizing: @val;
-}
-
-.drop-shadow (@x: 0, @y: 1px, @blur: 2px, @spread: 0, @alpha: 0.25) {
-  -webkit-box-shadow:	@x @y @blur @spread rgba(0, 0, 0, @alpha);
-  -moz-box-shadow:	@x @y @blur @spread rgba(0, 0, 0, @alpha);
-  box-shadow:		@x @y @blur @spread rgba(0, 0, 0, @alpha);
-}
-.text-shadow (@x: 0, @y: 1px, @blur: 2px, @alpha: 0.25) {
-  -webkit-text-shadow:	@x @y @blur rgba(0, 0, 0, @alpha);
-  -moz-text-shadow:	@x @y @blur rgba(0, 0, 0, @alpha);
-  text-shadow:		@x @y @blur rgba(0, 0, 0, @alpha);
-}
-
-.filter(@val){
-  -webkit-filter: @val;
-  -moz-filter: @val;
-  -ms-filter: @val;
-  -o-filter: @val;
-  filter: @val;
-}
-
-.font-face(@name, @path: '../fonts/', @family: arial, @weight: normal, @style: normal){
-  @font-face{
-    font-family: @name;
-    src:url(~'@{path}@{family}.eot');
-    src:url(~'@{path}@{family}.eot?#iefix') format('embedded-opentype'),
-    url(~'@{path}@{family}.woff') format('woff'),
-    url(~'@{path}@{family}.ttf') format('truetype'),
-    url(~'@{path}@{family}.svg#icon') format('svg');
-    font-weight: @weight;
-    font-style: @style;
-  }
-}
+@import "_background-clip";
+@import "_gradient";
+@import "_opacity";
+@import "_box-sizing";
+@import "_transform";
+@import "_transition";
+@import "_box-sizing";
+@import "_drop-shadow";
+@import "_text-shadow";
+@import "_filter";
+@import "_font-face";

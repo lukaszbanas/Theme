@@ -1,0 +1,27 @@
+.transition(@prop:color, @time:0.2s, @easing:linear){
+  -webkit-transition+: @prop, @time, @easing;
+  -moz-transition+: @prop, @time, @easing;
+  -o-transition+: @prop, @time, @easing;
+  transition+: @prop, @time, @easing;
+}
+
+.transition-duration(@time:.2s){
+  -webkit-transition-duration: @time;
+  -moz-transition-duration: @time;
+  -o-transition-duration: @time;
+  transition-duration: @time;
+}
+
+.transition-property(@prop:color){
+  -webkit-transition-property: @prop;
+  -moz-transition-property: @prop;
+  -o-transition-property: @prop;
+  transition-property: @prop;
+}
+
+.transition-timing-function(@timing:linear) {
+  -webkit-transition-property: @timing;
+  -moz-transition-property: @timing;
+  -o-transition-property: @timing;
+  transition-property: @timing;
+}

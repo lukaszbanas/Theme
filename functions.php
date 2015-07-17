@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Custom template, based on Twentytvelve
+ * Custom template
  * Author: Banas Lukasz <lukaszbanas4@gmail.com>
  * Version: 0.1
  * ========================================================================

@@ -1,0 +1,8 @@
+.opacity(@opacity: 0.5){
+  @ieOpacity: @opacity * 100;
+  -webkit-opacity: 	@opacity;
+  -moz-opacity: 		@opacity;
+  -ms-filter: ~"progid:DXImageTransform.Microsoft.Alpha(Opacity=@{ieOpacity})";
+  opacity: 		@opacity;
+  filter: ~"alpha(opacity=@{ieOpacity})";
+}

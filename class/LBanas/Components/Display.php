@@ -4,6 +4,7 @@ namespace LBanas\Components;
 
 use Monolog\Logger;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Class Display, should be final and result should be send to client.
@@ -244,9 +245,11 @@ class Display extends Page implements \LBanas\Components\HttpResponse
     public function render($templatePage = '', $args = array())
     {
         try {
+            $this->response = new Response();
+
             $finalArgs = array_merge($this->getGlobalArguments(), $args);
             $renderedData = $this->getTemplateEngine()->render($templatePage, $finalArgs);
-            $this->response = new Response();
+
             $this->response
                 ->sendHeaders(200)
                 ->setContent($renderedData);
@@ -260,6 +263,7 @@ class Display extends Page implements \LBanas\Components\HttpResponse
             echo($renderedData);
         } catch (\Exception $e) {
             $this->log('Critical error during rendering template: '.$e->getMessage());
+            $this->response = new RedirectResponse(home_url());
         }
 
         return $renderedData;
