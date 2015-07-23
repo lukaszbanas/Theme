@@ -33,3 +33,4 @@ try {
     echo( $e->getMessage() );
     Theme\Display::terminate();
 }
+

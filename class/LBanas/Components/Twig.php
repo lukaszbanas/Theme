@@ -45,6 +45,12 @@ class Twig implements TemplateEngine
         \Twig_Autoloader::register();
         $this->loader = new \Twig_Loader_Filesystem($templateDir);
         $this->env = new \Twig_Environment($this->loader, $options);
+
+        try {
+            Page::log('initialization twig. TemplateDir: '.$templateDir, 100, ['Twig','__construct']);
+        } catch (\Exception $e) {
+            return;
+        }
     }
 
     /**
@@ -58,6 +64,9 @@ class Twig implements TemplateEngine
         if (empty($this->env)) {
             throw new \Exception('Twig engine not initialized but trying display instead');
         }
+
+        Page::log('Rendering template `'.$name.'`', 100, ['Twig','render']);
+
         return $this->env->render($name, $args);
     }
 }

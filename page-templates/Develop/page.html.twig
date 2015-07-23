@@ -3,14 +3,10 @@
 {% extends 'layout.html.twig' %}
 
 {% block article %}
+
 	<article class="site-content">
-		{% for post in whilePosts %}
-			<header class="page-header">
-				<h1 class="entry-header">{{ Wordpress.the_title }}</h1>
-			</header>
-			<div class="entry-content">
-				{{ Wordpress.the_content }}
-			</div>
-		{% endfor %}
+		{% embed 'components/page-content.html.twig' %}
+		{% endembed %}
 	</article>
+
 {% endblock %}

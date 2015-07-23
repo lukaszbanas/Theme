@@ -3,14 +3,21 @@
 {% extends 'layout.html.twig' %}
 
 {% block article %}
+
 	<article class="site-content">
-		{% for post in whilePosts %}
-			<header class="page-header">
-				<h1 class="entry-header">{{ Wordpress.the_title }}</h1>
-			</header>
-			<div class="entry-content">
-				{{ Wordpress.the_content }}
-			</div>
-		{% endfor %}
+
+		{% embed 'components/page-content.html.twig' %}
+
+			{% block page_header %}{% endblock page_header %}
+
+			{% block page_content %}
+				{% for post in lastPosts %}
+					{% embed 'components/post-content.html.twig' %}
+					{% endembed %}
+				{% endfor %}
+			{% endblock page_content %}
+
+		{% endembed %}
 	</article>
+
 {% endblock %}

@@ -28,17 +28,34 @@ abstract class Page
      */
     private $templateEngine = null;
 
+    public static function getLogger()
+    {
+        if (empty(self::$logger)) {
+            if (!class_exists('\Monolog\Logger')) {
+                throw new \Exception('Monolog`s Logger class doesn`t exists, exiting');
+            }
+
+            try {
+                $logDirectory = get_template_directory() . DIRECTORY_SEPARATOR . 'logs'. DIRECTORY_SEPARATOR;
+                self::$logger = new \Monolog\Logger('system');
+                self::$logger->pushHandler(
+                    new \Monolog\Handler\StreamHandler($logDirectory . 'system.log', \Monolog\Logger::ERROR)
+                );
+            } catch (\Exception $e) {
+                exit('Critical error during initialization of Logger class');
+            }
+        }
+
+        return self::$logger;
+    }
+
     /**
      * @throws \Exception
      */
     public function __construct()
     {
-        if(!function_exists('get_template_directory')) {
+        if (!function_exists('get_template_directory')) {
             throw new \Exception('Wordpress not present, exiting');
-        }
-
-        if (!class_exists('\Monolog\Logger')) {
-            throw new \Exception('Monolog`s Logger class doesn`t exists, exiting');
         }
 
         if (!class_exists('\LBanas\Components\Config')) {
@@ -69,9 +86,9 @@ abstract class Page
             $cacheDir = false;
             if ($this->getConfig()->isTwigCache()) {
                 $cacheDir = $this->getConfig()->getPathToTmp() . $this->getConfig()->getTwigCacheDir();
-                $this->log('Setting Twig cache as ENABLED', 100, ['Page','__construct']);
+                self::log('Setting Twig cache as ENABLED', 100, ['Page','__construct']);
             } else {
-                $this->log('Setting Twig cache as DISABLED', 100, ['Page','__construct']);
+                self::log('Setting Twig cache as DISABLED', 100, ['Page','__construct']);
             }
 
             $this->templateEngine = \LBanas\Components\Twig::create(
@@ -99,14 +116,13 @@ abstract class Page
         //Polylang support
         if (defined('POLYLANG_VERSION')) {
             try {
-
                 $pathToLang = get_template_directory(). DIRECTORY_SEPARATOR . $this->getConfig()->getPathToLang();
-                if(file_exists($pathToLang)) {
+                if (file_exists($pathToLang)) {
                     include_once $pathToLang . DIRECTORY_SEPARATOR . 'polylang.php';
                     $this->log('Polylang string file sucessfully loaded.', 100, ['Page','__construct']);
                 }
             } catch (\Exception $e) {
-                $this->log('Failed to load polylang string file, error: ' . $e->getMessage(), 500, ['Page','__construct']);
+                self::log('Failed to load polylang string file, error: ' . $e->getMessage(), 500, ['Page','__construct']);
             }
         }
     }
@@ -119,7 +135,7 @@ abstract class Page
     public function __call($function, $arguments)
     {
         if (!function_exists($function)) {
-            $this->log('Call to undefined function `'.$function.'` through __call magic method.', 500, ['Page', '__call']);
+            self::log('Call to undefined function `'.$function.'` through __call magic method.', 500, ['Page', '__call']);
             return null;
         }
         return call_user_func_array($function, $arguments);
@@ -167,8 +183,8 @@ abstract class Page
         }
     }
 
-    public function log( $msg, $lvl=500, $context = array('prod'))
+    public static function log( $msg, $lvl=500, $context = array('prod'))
     {
-        self::$logger->log($lvl, $msg, $context);
+        self::getLogger()->log($lvl, $msg, $context);
     }
 }

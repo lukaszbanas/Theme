@@ -1,0 +1,16 @@
+{# components/page-content.html.twig #}
+
+{% block page_component %}
+    <header class="page-header">
+        <h1 class="entry-header">
+            {% block page_header %}
+                {{ Wordpress.the_title }}
+            {% endblock page_header %}
+        </h1>
+    </header>
+    <div class="page-content">
+        {% block page_content %}
+            {{ Wordpress.the_content }}
+        {% endblock page_content %}
+    </div>
+{% endblock page_component %}

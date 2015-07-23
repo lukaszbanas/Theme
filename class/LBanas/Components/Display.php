@@ -180,17 +180,20 @@ class Display extends Page implements \LBanas\Components\HttpResponse
      * Register into wordpress each of Stylesheet collection
      * @return void;
      */
-    private function enqueueStylesheet()
+    public function enqueueStylesheet()
     {
         if ($this->getCollection('stylesheets') != null) {
             foreach ($this->getCollection('stylesheets') as $stylesheet) {
+
                 $css = $stylesheet->getData();
+                $this->log($css['name']);
                 wp_enqueue_style(
-                    $css['name'],
-                    $this->getPath('Css') . $css['filename'],
-                    array(),
-                    $css['version'],
-                    'screen'
+                    $css['name']
+//                    ,
+//                    $this->getPath('Css') . $css['filename'],
+//                    array(),
+//                    $css['version'],
+//                    'screen'
                 );
             }
         }

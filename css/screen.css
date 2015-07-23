@@ -62,6 +62,10 @@
 /**
 * Framework
 */
+.main-nav .navbar-brand {
+  padding-top: 0;
+  padding-bottom: 0;
+}
 /**
 * Viewports
 */

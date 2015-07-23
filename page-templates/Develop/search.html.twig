@@ -4,22 +4,19 @@
 
 {% block article %}
 <article class="site-content">
-	
-	{% if Content is defined %}
-		{{ Content }}
-	{% endif %}
-	
-	{% if Wordpress.have_posts %}
-		<header class="page-header">
-			<h1 class="page-title">{{ Wordpress.__( 'Search Results for: %s', 'devtheme' ) }}<span>{{ Wordpress.get_search_query }}</span></h1>
-		</header>
-	{% else %}
-	{% endif %}
-	
-	{% for post in whilePosts %}
-		<header class="page-header"><h1 class="entry-header">{{ Wordpress.the_title }}</h1></header>
-		{{ Wordpress.the_content }}
-	{% endfor %}
-	
+
+	<article class="site-content">
+		{% embed 'components/page-content.html.twig' %}
+			{% block page_header %}
+				{% if Wordpress.have_posts %}
+					{{ Wordpress.__( 'Search Results for: ', 'devtheme' ) }}
+				{% else %}
+					{{ Wordpress.__( 'No result found for ', 'devtheme' ) }}
+				{% endif %}
+				<span>{{ Wordpress.get_search_query }}</span>
+			{% endblock page_header %}
+		{% endembed %}
+	</article>
+
 </article>
 {% endblock %}

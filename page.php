@@ -1,4 +1,4 @@
 <?php
 
-$display->render('post.html.twig', array());
+$display->render('page.html.twig', array());
 $display->send();

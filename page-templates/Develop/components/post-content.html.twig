@@ -1,0 +1,18 @@
+{# components/page-content.html.twig #}
+
+{% block post_component %}
+
+    <div class="post-container">
+        <div class="post-header">
+            {% block post_header %}
+                {{ post.post_title }}
+            {% endblock post_header %}
+        </div>
+        <div class="post-content">
+            {% block post_content %}
+                {{ post.post_content }}
+            {% endblock post_content %}
+        </div>
+    </div>
+
+{% endblock post_component %}
