@@ -10,7 +10,7 @@ use Twig_Autoloader;
  * @package LBanasComponents
  * @author Lukasz Banas <lukaszbanas4@gmail.com>
  * @license MIT <http://opensource.org/licenses/MIT>
- * @link link.to.git
+ * @link https://github.com/lukaszbanas/Theme
  * @since 0.0.1
  */
 class Twig implements TemplateEngine
