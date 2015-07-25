@@ -3,6 +3,7 @@
 //composer autoload
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'vendor/autoload.php';
 //core
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'class/LBanas/Components/Singleton.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'class/LBanas/Components/Page.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'class/LBanas/Components/WhileIterator.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'class/LBanas/Components/Factory.php';
@@ -21,7 +22,7 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'class/LBanas/Components/
 use \LBanas\Components as Theme;
 
 try {
-    $display = new Theme\Display();
+    $display = Theme\Display::instance();
     $display->init();
 
     $display->addGlobalArguments('Wordpress', $display);

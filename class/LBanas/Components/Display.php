@@ -17,6 +17,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  */
 class Display extends Page implements \LBanas\Components\HttpResponse
 {
+    use Singleton;
+
     /**
      * Menus collection, declared in Config
      * @var array|null
@@ -90,13 +92,13 @@ class Display extends Page implements \LBanas\Components\HttpResponse
 
         foreach(['Menus','Sidebars','Stylesheets','Scripts'] as $collections) {
             $method = 'get' . $collections;
-            if(method_exists(self::instance()->getConfig(), $method)) {
+            if(method_exists($this->getConfig(), $method)) {
                 $collectionName = strtolower($collections);
                 $factoryName = str_split($collections, (strlen($collections) - 1));
                 $factoryName = __NAMESPACE__ .'\\'. $factoryName[0];
-                foreach (self::instance()->getConfig()->{$method}() as $element) {
+                foreach ($this->getConfig()->{$method}() as $element) {
                     if(class_exists( $factoryName )) {
-                        self::instance()->addCollection(
+                        $this->addCollection(
                             $collectionName,
                             $factoryName::create($element['name'], $element['extra'])
                         );
@@ -106,9 +108,9 @@ class Display extends Page implements \LBanas\Components\HttpResponse
         }
 
         try {
-            self::instance()->registerMenus();
-            self::instance()->registerSidebars();
-            add_action('wp_enqueue_scripts', array(__CLASS__,'registerStylesheets'));
+            $this->registerMenus();
+            $this->registerSidebars();
+            add_action('wp_enqueue_scripts', array(Display::instance(),'registerStylesheets'));
         } catch (\Exception $e) {
             Page::log(
                 'Cannot initialize Wordpress components. '.'Error message: ' . $e->getMessage(),
@@ -119,8 +121,8 @@ class Display extends Page implements \LBanas\Components\HttpResponse
         }
 
         try {
-            add_action('wp_enqueue_scripts', array(__CLASS__,'enqueueStylesheet'));
-            add_action('wp_enqueue_scripts', array(__CLASS__,'enqueueScripts'));
+            add_action('wp_enqueue_scripts', array(Display::instance(),'enqueueStylesheet'));
+            add_action('wp_enqueue_scripts', array(Display::instance(),'enqueueScripts'));
         } catch (\Exception $e) {
             Page::log(
                 'Cannot declare dependencies as closures. Msg: '.$e->getMessage(),
@@ -201,15 +203,15 @@ class Display extends Page implements \LBanas\Components\HttpResponse
      * @return void;
      * @since 0.0.1
      */
-    public static function enqueueStylesheet()
+    public function enqueueStylesheet()
     {
-        if (self::instance()->getCollection('stylesheets') != null) {
-            foreach (self::instance()->getCollection('stylesheets') as $stylesheet) {
+        if ($this->getCollection('stylesheets') != null) {
+            foreach ($this->getCollection('stylesheets') as $stylesheet) {
 
                 $css = $stylesheet->getData();
                 wp_enqueue_style(
                     $css['name'],
-                    self::instance()->getPath('Css') . $css['filename'],
+                    $this->getPath('Css') . $css['filename'],
                     array(),
                     $css['version'],
                     'screen'
@@ -223,14 +225,14 @@ class Display extends Page implements \LBanas\Components\HttpResponse
      * @return void;
      * @since 0.0.1
      */
-    public static function enqueueScripts()
+    public function enqueueScripts()
     {
-        if (self::instance()->getCollection('scripts') != null) {
-            foreach (self::instance()->getCollection('scripts') as $script) {
+        if ($this->getCollection('scripts') != null) {
+            foreach ($this->getCollection('scripts') as $script) {
                 $js = $script->getData();
                 wp_enqueue_script(
                     $js['name'],
-                    self::instance()->getPath('Js') . $js['filename'],
+                    $this->getPath('Js') . $js['filename'],
                     $js['dependencies'],
                     $js['version'],
                     $js['inFooter']
@@ -244,14 +246,14 @@ class Display extends Page implements \LBanas\Components\HttpResponse
      * @return void;
      * @since 0.0.1
      */
-    public static function registerStylesheets()
+    public function registerStylesheets()
     {
-        if (self::instance()->getCollection('stylesheets') != null) {
-            foreach (self::instance()->getCollection('stylesheets') as $stylesheet) {
+        if ($this->getCollection('stylesheets') != null) {
+            foreach ($this->getCollection('stylesheets') as $stylesheet) {
                 $css = $stylesheet->getData();
                 wp_register_style(
                     $css['name'],
-                    self::instance()->getPath('Css') . $css['filename'],
+                    $this->getPath('Css') . $css['filename'],
                     array(),
                     $css['version'],
                     'screen'
@@ -279,22 +281,32 @@ class Display extends Page implements \LBanas\Components\HttpResponse
                 ->sendHeaders(200)
                 ->setContent($renderedData);
         } catch (\Twig_Error_Syntax $twigError) {
-            $this->log(
-                'TWIG error during rendering '.$twigError->getTemplateFile().'. Error: '.$twigError->getMessage()
+            Page::log(
+                'TWIG error during rendering '.$twigError->getTemplateFile().'. Error: '.$twigError->getMessage(),
+                500,
+                ['Display', 'render']
             );
             $this->terminate();
         } catch (\HttpResponseException $responseException) {
-            $this->log('Error during sending HttpResponse, message: '.$responseException->getMessage());
+            Page::log(
+                'Error during sending HttpResponse, message: '.$responseException->getMessage(),
+                500,
+                ['Display', 'render']
+            );
             echo($renderedData);
         } catch (\Exception $e) {
-            $this->log('Critical error during rendering template: '.$e->getMessage());
+            Page::log(
+                'Critical error during rendering template: '.$e->getMessage(),
+                500,
+                ['Display', 'render']
+            );
             $this->response = new RedirectResponse(home_url());
         }
 
         return $renderedData;
     }
 
-    
+
     public function send()
     {
         $this->response->send();
@@ -329,6 +341,7 @@ class Display extends Page implements \LBanas\Components\HttpResponse
     /**
      * @param string $to
      * @return string
+     * @deprecated
      */
     public function getPath($to = '')
     {
@@ -343,24 +356,34 @@ class Display extends Page implements \LBanas\Components\HttpResponse
 
     /**
      * @return bool
+     * @deprecated
      */
     public function getOption()
     {
         return false;
     }
 
+    //@todo add backtrace
     public static function terminate()
     {
-        //echo(self::$logger->toMonologLevel(100));
-        //$this->log('Soft - terminated.', 900);
-        exit();
-    }
-
-    public static function instance()
-    {
-        if (empty(self::$self)) {
-            self::$self = new self;
+        //log error
+        try {
+            Page::log(
+                '-- rendering terminated --',
+                900,
+                ['Display','terminate']
+            );
+        } catch (\Exception $logMessage) {
+            //@todo echo if in debug mode
         }
-        return self::$self;
+
+        //redirect to 404
+        try {
+            return new RedirectResponse(home_url());
+        } catch (\Exception $e) {
+            //http response failed
+        }
+
+        exit();
     }
 }

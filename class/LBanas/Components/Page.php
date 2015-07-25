@@ -24,11 +24,6 @@ abstract class Page
     protected $config;
 
     /**
-     * @var self
-     */
-    public static $self;
-
-    /**
      * @var Twig|null
      */
     private $templateEngine = null;
