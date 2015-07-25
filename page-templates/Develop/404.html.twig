@@ -1,0 +1,18 @@
+{# page.html.twig #}
+
+{% extends 'layout.html.twig' %}
+
+{% block article %}
+
+	<article class="site-content">
+		{% embed 'components/page-content.html.twig' %}
+			{% block page_header %}
+				{{ Wordpress.__('Page not found') }}
+			{% endblock page_header %}
+			{% block page_content %}
+				{{ Wordpress.__('Selected page doesnt exist') }}
+			{% endblock page_content %}
+		{% endembed %}
+	</article>
+
+{% endblock %}

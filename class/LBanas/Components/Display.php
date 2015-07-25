@@ -18,49 +18,57 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 class Display extends Page implements \LBanas\Components\HttpResponse
 {
     /**
-     * Menus collection
+     * Menus collection, declared in Config
      * @var array|null
+     * @since 0.0.1
      */
     private $menus;
 
     /**
-     * Sidebars collection
+     * Sidebars collection, declared in Config
      * @var array|null
+     * @since 0.0.1
      */
     private $sidebars;
 
     /**
-     * Stylesheets collection
+     * Stylesheets collection, declared in Config
      * @var array|null
+     * @since 0.0.1
      */
     private $stylesheets;
 
     /**
-     * Scripts collection
+     * Scripts collection, declared in Config
      * @var array|null
+     * @since 0.0.1
      */
     private $scripts;
 
     /**
      * Arguments globally passed to Template engine
      * @var array
+     * @since 0.0.1
      */
     private $globalArguments = array();
 
     /**
      * Is template ready for sending to client flag
      * @var bool
+     * @since 0.0.1
      */
     private static $isInitialized = false;
 
     /**
      * \HttpResponse object
      * @var null
+     * @since 0.0.1
      */
     private $response = null;
 
     /**
     * Object constructor
+     * @since 0.0.1
      */
     public function __construct()
     {
@@ -68,8 +76,9 @@ class Display extends Page implements \LBanas\Components\HttpResponse
     }
 
     /**
-     * Manual initialization of all theme components
-     * @return void
+     * Manual initialization of all theme components.
+     * @return bool
+     * @since 0.0.1
      */
     public function init()
     {
@@ -81,13 +90,13 @@ class Display extends Page implements \LBanas\Components\HttpResponse
 
         foreach(['Menus','Sidebars','Stylesheets','Scripts'] as $collections) {
             $method = 'get' . $collections;
-            if(method_exists($this->getConfig(), $method)) {
+            if(method_exists(self::instance()->getConfig(), $method)) {
                 $collectionName = strtolower($collections);
                 $factoryName = str_split($collections, (strlen($collections) - 1));
                 $factoryName = __NAMESPACE__ .'\\'. $factoryName[0];
-                foreach ($this->getConfig()->{$method}() as $element) {
+                foreach (self::instance()->getConfig()->{$method}() as $element) {
                     if(class_exists( $factoryName )) {
-                        $this->addCollection(
+                        self::instance()->addCollection(
                             $collectionName,
                             $factoryName::create($element['name'], $element['extra'])
                         );
@@ -97,25 +106,32 @@ class Display extends Page implements \LBanas\Components\HttpResponse
         }
 
         try {
-            $this->registerMenus();
-            $this->registerSidebars();
-            add_action('wp_enqueue_scripts', array($this,'registerStylesheets'));
+            self::instance()->registerMenus();
+            self::instance()->registerSidebars();
+            add_action('wp_enqueue_scripts', array(__CLASS__,'registerStylesheets'));
         } catch (\Exception $e) {
-            $this->log('cannot initialize Wordpress components. '.'Error message: ' . $e->getMessage());
+            Page::log(
+                'Cannot initialize Wordpress components. '.'Error message: ' . $e->getMessage(),
+                500,
+                ['Display', 'init']
+            );
             Display::terminate();
         }
 
-        //@TODO logical error -in register sript / style function
-        // create registration, in enqueue (below) add enqueue
         try {
-            add_action('wp_enqueue_scripts', array($this,'enqueueStylesheet'));
-            add_action('wp_enqueue_scripts', array($this,'enqueueScripts'));
+            add_action('wp_enqueue_scripts', array(__CLASS__,'enqueueStylesheet'));
+            add_action('wp_enqueue_scripts', array(__CLASS__,'enqueueScripts'));
         } catch (\Exception $e) {
-            $this->log('cannot declare dependencies as closures. Msg: '.$e->getMessage());
+            Page::log(
+                'Cannot declare dependencies as closures. Msg: '.$e->getMessage(),
+                500,
+                ['Display', 'init']
+            );
             Display::terminate();
         }
 
         self::$isInitialized = true;
+        return self::$isInitialized;
     }
 
     /**
@@ -123,6 +139,7 @@ class Display extends Page implements \LBanas\Components\HttpResponse
      * @param $target
      * @param $element
      * @return $this
+     * @since 0.0.1
      */
     public function addCollection($target, $element)
     {
@@ -135,6 +152,7 @@ class Display extends Page implements \LBanas\Components\HttpResponse
      * @param $target
      * @return mixed
      * @throws \Exception
+     * @since 0.0.1
      */
     public function getCollection($target)
     {
@@ -142,7 +160,7 @@ class Display extends Page implements \LBanas\Components\HttpResponse
             return $this->{$target};
         } else {
             $errorMsg = 'Trying to get undefined collection `'.$target.'`';
-            self::$logger->addCritical($errorMsg);
+            Page::log($errorMsg, 500, ['Display', 'getCollection']);
             throw new \Exception($errorMsg);
         }
     }
@@ -150,6 +168,7 @@ class Display extends Page implements \LBanas\Components\HttpResponse
     /**
      * Register into wordpress each of Menus collection
      * @return void;
+     * @since 0.0.1
     */
     private function registerMenus()
     {
@@ -166,6 +185,7 @@ class Display extends Page implements \LBanas\Components\HttpResponse
     /**
      * Register into wordpress each of Sidebar collection
      * @return void;
+     * @since 0.0.1
      */
     private function registerSidebars()
     {
@@ -179,21 +199,20 @@ class Display extends Page implements \LBanas\Components\HttpResponse
     /**
      * Register into wordpress each of Stylesheet collection
      * @return void;
+     * @since 0.0.1
      */
-    public function enqueueStylesheet()
+    public static function enqueueStylesheet()
     {
-        if ($this->getCollection('stylesheets') != null) {
-            foreach ($this->getCollection('stylesheets') as $stylesheet) {
+        if (self::instance()->getCollection('stylesheets') != null) {
+            foreach (self::instance()->getCollection('stylesheets') as $stylesheet) {
 
                 $css = $stylesheet->getData();
-                $this->log($css['name']);
                 wp_enqueue_style(
-                    $css['name']
-//                    ,
-//                    $this->getPath('Css') . $css['filename'],
-//                    array(),
-//                    $css['version'],
-//                    'screen'
+                    $css['name'],
+                    self::instance()->getPath('Css') . $css['filename'],
+                    array(),
+                    $css['version'],
+                    'screen'
                 );
             }
         }
@@ -202,15 +221,16 @@ class Display extends Page implements \LBanas\Components\HttpResponse
     /**
      * Enqueue previously registeres script
      * @return void;
+     * @since 0.0.1
      */
-    private function enqueueScripts()
+    public static function enqueueScripts()
     {
-        if ($this->getCollection('scripts') != null) {
-            foreach ($this->getCollection('scripts') as $script) {
+        if (self::instance()->getCollection('scripts') != null) {
+            foreach (self::instance()->getCollection('scripts') as $script) {
                 $js = $script->getData();
                 wp_enqueue_script(
                     $js['name'],
-                    $this->getPath('Js') . $js['filename'],
+                    self::instance()->getPath('Js') . $js['filename'],
                     $js['dependencies'],
                     $js['version'],
                     $js['inFooter']
@@ -222,15 +242,16 @@ class Display extends Page implements \LBanas\Components\HttpResponse
     /**
      * Enqueue previously registeres stylesheets
      * @return void;
+     * @since 0.0.1
      */
-    private function registerStylesheets()
+    public static function registerStylesheets()
     {
-        if ($this->getCollection('stylesheets') != null) {
-            foreach ($this->getCollection('stylesheets') as $stylesheet) {
+        if (self::instance()->getCollection('stylesheets') != null) {
+            foreach (self::instance()->getCollection('stylesheets') as $stylesheet) {
                 $css = $stylesheet->getData();
                 wp_register_style(
                     $css['name'],
-                    $this->getPath('Css') . $css['filename'],
+                    self::instance()->getPath('Css') . $css['filename'],
                     array(),
                     $css['version'],
                     'screen'
@@ -244,6 +265,7 @@ class Display extends Page implements \LBanas\Components\HttpResponse
      * @param array $args
      * @return bool|string
      * @throws \Exception
+     * @since 0.0.1
      */
     public function render($templatePage = '', $args = array())
     {
@@ -272,6 +294,7 @@ class Display extends Page implements \LBanas\Components\HttpResponse
         return $renderedData;
     }
 
+    
     public function send()
     {
         $this->response->send();
@@ -331,5 +354,13 @@ class Display extends Page implements \LBanas\Components\HttpResponse
         //echo(self::$logger->toMonologLevel(100));
         //$this->log('Soft - terminated.', 900);
         exit();
+    }
+
+    public static function instance()
+    {
+        if (empty(self::$self)) {
+            self::$self = new self;
+        }
+        return self::$self;
     }
 }
