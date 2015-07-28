@@ -106,13 +106,13 @@ class Config implements \Serializable
         array(
             'name' => 'main_menu_1',
             'extra' => array(
-                'description' => 'Main menu'
+                'description' => 'Glowne menu'
             )
         ),
         array(
             'name' => 'sub_menu_1',
             'extra' => array(
-                'description' => 'Supplementary menu'
+                'description' => 'Menu w stopce'
             )
         ),
     );
@@ -122,10 +122,10 @@ class Config implements \Serializable
      */
     private $sidebars = array(
         array(
-            'name'  => 'Static Sidebar',
+            'name'  => 'Widget - O nas',
             'extra' => array(
                 'id'          => 'sidebar-1',
-                'description' => 'dummy sidebar',
+                'description' => 'Miejsce na widgety z lewej strony panelu `O Nas`',
                 'before_widget' => '<li id="%1$s" class="list-group-item widget %2$s">',
                 'after_widget' => '</li>',
             )),
@@ -166,36 +166,9 @@ class Config implements \Serializable
             ),
         ),
         array(
-            'name'  => 'jpreloader',
-            'extra' => array(
-                'filename'     => 'jpreloader.min.js',
-                'dependencies' => array('jquery'),
-                'version'      => '1.0',
-                'inFooter'     => false
-            ),
-        ),
-        array(
-            'name'  => 'parallax',
-            'extra' => array(
-                'filename'     => 'parallax.min.js',
-                'dependencies' => array('jquery'),
-                'version'      => '1.0',
-                'inFooter'     => true
-            ),
-        ),
-        array(
             'name'  => 'scrollTo',
             'extra' => array(
                 'filename'     => 'jquery.scrollTo.min.js',
-                'dependencies' => array('jquery'),
-                'version'      => '1.0',
-                'inFooter'     => true
-            ),
-        ),
-        array(
-            'name'  => 'waypoints',
-            'extra' => array(
-                'filename'     => 'jquery.waypoints.min.js',
                 'dependencies' => array('jquery'),
                 'version'      => '1.0',
                 'inFooter'     => true

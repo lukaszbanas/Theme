@@ -1,7 +1,7 @@
 <?php
+
 /**
- * Template Name: Home site
- *
+ * Template Name: Strona Golwna
  */
 
 $lastPosts = get_posts();
