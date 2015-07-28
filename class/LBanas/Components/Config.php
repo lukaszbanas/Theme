@@ -12,7 +12,7 @@ namespace LBanas\Components;
  * @since 0.0.1
  * @TODO implement \Serializable and conversion from / to xml, yml, json
  */
-class Config
+class Config implements \Serializable
 {
     /**
      * @var string
@@ -212,6 +212,12 @@ class Config
         ),
     );
 
+    public function __get($property)
+    {
+        if (property_exists($this, $property)) {
+            return $this->{$property};
+        }
+    }
 
     /**
      * @return array
@@ -438,5 +444,15 @@ class Config
     public function isDisableRss()
     {
         return $this->disableRss;
+    }
+
+    public function serialize()
+    {
+
+    }
+
+    public function unserialize($serialized)
+    {
+
     }
 }

@@ -286,14 +286,18 @@ class Display extends Page implements \LBanas\Components\HttpResponse
                 500,
                 ['Display', 'render']
             );
-            $this->terminate();
+            self::terminate();
         } catch (\HttpResponseException $responseException) {
             Page::log(
                 'Error during sending HttpResponse, message: '.$responseException->getMessage(),
                 500,
                 ['Display', 'render']
             );
-            echo($renderedData);
+            if (!empty($renderedData)) {
+                echo($renderedData);
+            } else {
+                self::terminate();
+            }
         } catch (\Exception $e) {
             Page::log(
                 'Critical error during rendering template: '.$e->getMessage(),
@@ -349,7 +353,7 @@ class Display extends Page implements \LBanas\Components\HttpResponse
         try {
             return get_template_directory_uri() . $this->getConfig()->{$goto}();
         } catch (\Exception $e) {
-            self::$logger->addAlert('Failed execution of getPath - unknown method `' . $to . '`');
+            Page::log('Failed execution of getPath - unknown method `' . $to . '`', 500, ['Display', 'getPath']);
         }
         return get_template_directory_uri() . $this->getConfig()->getPath();
     }
@@ -370,20 +374,19 @@ class Display extends Page implements \LBanas\Components\HttpResponse
         try {
             Page::log(
                 '-- rendering terminated --',
-                900,
+                500,
                 ['Display','terminate']
             );
         } catch (\Exception $logMessage) {
             //@todo echo if in debug mode
         }
-
         //redirect to 404
         try {
-            return new RedirectResponse(home_url());
+            $response = new RedirectResponse('500');
+            $response->send();
         } catch (\Exception $e) {
             //http response failed
         }
-
         exit();
     }
 }

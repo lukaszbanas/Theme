@@ -1,0 +1,34 @@
+{# page.html.twig #}
+
+{% extends 'layout.html.twig' %}
+
+{% block article %}
+
+    <article class="site-content image-attachment">
+        {% embed 'components/page-content.html.twig' %}
+            {% block page_header %}
+				{{ Wordpress.the_title() }}
+			{% endblock page_header %}
+			{% block page_content %}
+
+				<a href="{{ next_attachment_url }}" title="{{ Wordpress.get_the_title }}" rel="attachment">
+					{{ Wordpress.wp_get_attachment_image( Wordpress.get_the_ID )|raw }}
+				</a>
+
+				{% if Wordpress.get_the_excerpt is not empty %}
+					<div class="entry-caption">
+						{{ Wordpress.the_excerpt | raw }}
+					</div>
+				{% endif %}
+
+				{% if Wordpress.get_the_content is not empty %}
+					<div class="post-content">
+						{{ Wordpress.the_content | raw }}
+					</div>
+				{% endif %}
+
+			{% endblock page_content %}
+        {% endembed %}
+    </article>
+
+{% endblock %}

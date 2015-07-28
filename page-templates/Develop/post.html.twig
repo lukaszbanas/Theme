@@ -5,10 +5,23 @@
 {% block article %}
 	<article class="site-content">
 		{% for post in whilePosts %}
-
 			{% embed 'components/post-content.html.twig' %}
+				{% block post_header %}
+					{{ Wordpress.get_the_title }}
+				{% endblock post_header %}
+				{% block post_content %}
+					{{ Wordpress.get_the_content }}
+				{% endblock post_content %}
 			{% endembed %}
-			
+		{% else %}
+			{% embed 'components/post-content.html.twig' %}
+				{% block post_header %}
+					{{ Wordpress.__('Post not found!') }}
+				{% endblock post_header %}
+				{% block post_content %}
+					{{ Wordpress.__('Selected post doesnt exist.') }}
+				{% endblock post_content %}
+			{% endembed %}
 		{% endfor %}
 	</article>
 {% endblock %}

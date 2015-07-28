@@ -79,7 +79,7 @@ abstract class Page
                 );
             }
 
-            $this->log('Successfully created new \Display instance', 100, ['Page','__construct']);
+            self::log('Successfully created new \Display instance', 100, ['Page','__construct']);
 
             //TWIG init
             //@TODO add environment capability
@@ -108,9 +108,9 @@ abstract class Page
         //Class sucessfully initialized, begin wordpress integration
         if ($this->getConfig()->isDisableRss()) {
             $this->disableRss();
-            $this->log('Setting RSS channels as DISABLED', 100, ['Page','__construct']);
+            self::log('Setting RSS channels as DISABLED', 100, ['Page','__construct']);
         } else {
-            $this->log('Setting RSS channels as ENABLED', 100, ['Page','__construct']);
+            self::log('Setting RSS channels as ENABLED', 100, ['Page','__construct']);
         }
 
         //Polylang support
